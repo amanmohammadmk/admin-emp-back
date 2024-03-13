@@ -19,7 +19,12 @@ const router= new express.Router()
 // path to handle request from frontend
 // for adding /add path to addUser
 
+router.post('/login', userController.login)
+
+
 router.post('/add', multerConfig.single("profile"),userController.addUser)
+
+
 
 router.get('/get/allusers',userController.getallUsers)
 

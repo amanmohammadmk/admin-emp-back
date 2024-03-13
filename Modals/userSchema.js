@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+    selectedCourses: {
+        type: [String],
+        required: true
+    },
     profile:{
         type:String,
         require:true

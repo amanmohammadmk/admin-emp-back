@@ -51,9 +51,10 @@ emsserver.listen(PORT,()=>{
 
 //  to resolve requset from front end
 
-emsserver.post('/',(req,res )=>{
-    res.send(`<h1>ems server started at port 4000</h1>`)
-})
+
+
+
+
 
 
 

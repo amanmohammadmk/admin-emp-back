@@ -3,12 +3,15 @@
 // setting a variable for importing schema
 const users= require('../Modals/userSchema')
 
+const adminmodel = require('../Modals/adminLog')
+
+
 
 
 exports.addUser=async(req,res)=>{
     req.file
     console.log("inside addUser ");
-    const{fname,lname,email,mobile,gender,status,location}=req.body
+    const{fname,lname,email,mobile,gender,status,selectedCourses,location}=req.body
 
     try{
         const preuser=await  users.findOne({email})
@@ -17,7 +20,7 @@ exports.addUser=async(req,res)=>{
         }
         else{
             const newuser=new users({
-                fname,lname,email,mobile,gender,status,profile:req.file.filename,location
+                fname,lname,email,mobile,gender,status,selectedCourses,profile:req.file.filename,location
             })
 
             await newuser.save()
@@ -65,7 +68,7 @@ exports.deleteUser=async(req,res)=>{
 
 exports.editUser=async(req,res)=>{
     const {id} =req.params
-    const{fname,lname,email,mobile,gender,status,location,profile}=req.body
+    const{fname,lname,email,mobile,gender,status,selectedCourses,location,profile}=req.body
     const file=req.file?req.file.filename:profile
     try{
         const updateUser=await users.findByIdAndUpdate({_id:id},{
@@ -80,6 +83,31 @@ exports.editUser=async(req,res)=>{
         res.status(401).json(err)
     }
 }
+
+
+exports.login = async (req, res) => {
+    const { admin_name, admin_pass } = req.body;
+
+    try {
+        const admin = await adminmodel.findOne({ admin_name: admin_name });
+
+        if (admin) {
+            // Admin with the provided name exists, now check the password
+            const passwordMatch = admin.admin_pass === admin_pass;
+
+            if (passwordMatch) {
+                res.json("success");
+            } else {
+                res.json("Incorrect password");
+            }
+        } else {
+            res.json("User does not exist");
+        }
+    } catch (err) {
+        res.status(401).json({ error: err.message });
+    }
+};
+
 
 
 
